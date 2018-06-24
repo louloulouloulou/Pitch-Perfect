@@ -11,14 +11,6 @@ import AVFoundation
 
 class PlaySoundsViewController: UIViewController {
 
-    @IBOutlet weak var slowButton: UIButton!
-    @IBOutlet weak var fastButton: UIButton!
-    @IBOutlet weak var highButton: UIButton!
-    @IBOutlet weak var lowButton: UIButton!
-    @IBOutlet weak var echoButton: UIButton!
-    @IBOutlet weak var reverbButton: UIButton!
-    @IBOutlet weak var stopButton: UIButton!
-    
     var recordedAudioURL: URL! // This controller is ready to receive the URL.
     var audioFile: AVAudioFile!
     var audioEngine: AVAudioEngine!
@@ -26,6 +18,14 @@ class PlaySoundsViewController: UIViewController {
     var stopTimer: Timer!
     
     enum ButtonType: Int { case slow = 0, fast, high, low, echo, reverb }
+    
+    @IBOutlet weak var slowButton: UIButton!
+    @IBOutlet weak var fastButton: UIButton!
+    @IBOutlet weak var highButton: UIButton!
+    @IBOutlet weak var lowButton: UIButton!
+    @IBOutlet weak var echoButton: UIButton!
+    @IBOutlet weak var reverbButton: UIButton!
+    @IBOutlet weak var stopButton: UIButton!
     
     // MARK: - Actions
     
@@ -52,22 +52,29 @@ class PlaySoundsViewController: UIViewController {
         stopAudio()
     }
     
+    // MARK: - Overrides
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupAudio()
-        
-        // Helps buttons not get squished in landscape mode!
+        setButtonsContentMode()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        configureUI(.notPlaying)
+    }
+    
+    // MARK: - UI Functions
+    
+    // Stop buttons getting squished in landscape mode!
+    func setButtonsContentMode(){
         slowButton.imageView?.contentMode = .scaleAspectFit
         fastButton.imageView?.contentMode = .scaleAspectFit
         highButton.imageView?.contentMode = .scaleAspectFit
         lowButton.imageView?.contentMode = .scaleAspectFit
         echoButton.imageView?.contentMode = .scaleAspectFit
         reverbButton.imageView?.contentMode = .scaleAspectFit
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        configureUI(.notPlaying)
     }
 
 }
